@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 import Navbar from "./components/Navbar";
@@ -32,8 +32,22 @@ const startingEntries = [
 ];
 
 function App() {
-  const [entries, setEntries] = useState(startingEntries);
-  const [pets, setPets] = useState(startingPets);
+const [entries, setEntries] = useState(() =>
+  getSavedData("tummyTrackerEntries", startingEntries)
+);
+
+const [pets, setPets] = useState(() =>
+  getSavedData("tummyTrackerPets", startingPets)
+);
+
+useEffect(() => {
+  localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
+}, [entries]);
+
+useEffect(() => {
+  localStorage.setItem("tummyTrackerPets", JSON.stringify(pets));
+}, [pets]);
+  
 
   function handleAddEntry(newEntry) {
     setEntries((currentEntries) => [newEntry, ...currentEntries]);
@@ -55,6 +69,16 @@ function App() {
       })
     );
   }
+
+  function getSavedData(key, fallbackData) {
+  const savedData = localStorage.getItem(key);
+
+  if (!savedData) {
+    return fallbackData;
+  }
+
+  return JSON.parse(savedData);
+}
 
   return (
     <main className="app-shell">
