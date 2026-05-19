@@ -1,16 +1,9 @@
 export const pets = [
   {
     id: 1,
-    name: "Mochi",
+    name: "PB",
     type: "Cat",
-    status: "Ate all breakfast",
+    status: "No meals logged yet",
     appetite: "Good",
-  },
-  {
-    id: 2,
-    name: "Bean",
-    type: "Dog",
-    status: "Skipped lunch",
-    appetite: "Watch",
   },
 ];

@@ -33,22 +33,22 @@ const startingEntries = [
 ];
 
 function App() {
-const [entries, setEntries] = useState(() =>
-  getSavedData("tummyTrackerEntries", startingEntries)
-);
+  const [entries, setEntries] = useState(() =>
+    getSavedData("tummyTrackerEntries", startingEntries)
+  );
 
-const [pets, setPets] = useState(() =>
-  getSavedData("tummyTrackerPets", startingPets)
-);
+  const [pets, setPets] = useState(() =>
+    getSavedData("tummyTrackerPets", startingPets)
+  );
 
-useEffect(() => {
-  localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
-}, [entries]);
+  useEffect(() => {
+    localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
+  }, [entries]);
 
-useEffect(() => {
-  localStorage.setItem("tummyTrackerPets", JSON.stringify(pets));
-}, [pets]);
-  
+  useEffect(() => {
+    localStorage.setItem("tummyTrackerPets", JSON.stringify(pets));
+  }, [pets]);
+
 
   function handleAddEntry(newEntry) {
     setEntries((currentEntries) => [newEntry, ...currentEntries]);
@@ -72,29 +72,29 @@ useEffect(() => {
   }
 
   function handleResetApp() {
-  setEntries(startingEntries);
-  setPets(startingPets);
+    setEntries(startingEntries);
+    setPets(startingPets);
 
-  localStorage.removeItem("tummyTrackerEntries");
-  localStorage.removeItem("tummyTrackerPets");
-}
-
-function handleAddPet(newPet) {
-  setPets((currentPets) => [
-    ...currentPets,
-    newPet,
-  ]);
-}
-
-  function getSavedData(key, fallbackData) {
-  const savedData = localStorage.getItem(key);
-
-  if (!savedData) {
-    return fallbackData;
+    localStorage.removeItem("tummyTrackerEntries");
+    localStorage.removeItem("tummyTrackerPets");
   }
 
-  return JSON.parse(savedData);
-}
+  function handleAddPet(newPet) {
+    setPets((currentPets) => [
+      ...currentPets,
+      newPet,
+    ]);
+  }
+
+  function getSavedData(key, fallbackData) {
+    const savedData = localStorage.getItem(key);
+
+    if (!savedData) {
+      return fallbackData;
+    }
+
+    return JSON.parse(savedData);
+  }
 
   return (
     <main className="app-shell">
@@ -107,7 +107,10 @@ function handleAddPet(newPet) {
 
             <StatsBar entries={entries} pets={pets} />
 
-            <MealForm onAddEntry={handleAddEntry} />
+            <MealForm
+              onAddEntry={handleAddEntry}
+              pets={pets}
+            />
 
             <AddPetForm onAddPet={handleAddPet} />
 
