@@ -67,3 +67,50 @@ button.secondary {
   background: #ead9c5;
   color: #2b2118;
 }
+
+.pet-grid {
+  width: min(720px, 100%);
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pet-card {
+  background: #fffaf3;
+  border: 2px solid #ead9c5;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.1);
+}
+
+.pet-card h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.pet-type {
+  margin: 0 0 4px;
+  color: #c97932;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.appetite-badge {
+  display: inline-block;
+  margin-top: 12px;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 800;
+  background: #ead9c5;
+}
+
+.appetite-badge.good {
+  background: #d9f5e7;
+  color: #23664b;
+}
+
+.appetite-badge.watch {
+  background: #ffe1c4;
+  color: #8a4a12;
+}
