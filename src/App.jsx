@@ -4,41 +4,47 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import PetCard from "./components/PetCard";
 import ActivityFeed from "./components/ActivityFeed";
+import StatsBar from "./components/StatsBar";
+import MealForm from "./components/MealForm";
 
 import { pets } from "./data/pets";
 
 function App() {
   return (
-  <main className="app-shell">
+    <main className="app-shell">
 
-    <Navbar />
+      <Navbar />
 
-    <div className="content-container">
+      <div className="content-container">
 
-      <div className="dashboard-layout">
+        <div className="dashboard-layout">
 
-        <section>
+          <section>
 
-          <Hero />
+            <Hero />
 
-          <section className="pet-grid">
-            {pets.map((pet) => (
-              <PetCard
-                key={pet.id}
-                pet={pet}
-              />
-            ))}
+            <StatsBar />
+
+            <MealForm />
+
+            <section className="pet-grid">
+              {pets.map((pet) => (
+                <PetCard
+                  key={pet.id}
+                  pet={pet}
+                />
+              ))}
+            </section>
+
           </section>
 
-        </section>
+          <ActivityFeed />
 
-        <ActivityFeed />
+        </div>
 
       </div>
-
-    </div>
-  </main>
-);
+    </main>
+  );
 }
 
 export default App;

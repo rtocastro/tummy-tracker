@@ -231,6 +231,129 @@ button.secondary {
   color: #c97932;
 }
 
+.stats-bar {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
+
+  gap: 16px;
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fffaf3;
+
+  border: 2px solid #ead9c5;
+
+  border-radius: 24px;
+
+  padding: 20px;
+
+  box-shadow:
+    0 14px 30px rgba(70, 45, 20, 0.06);
+}
+
+.stat-label {
+  margin: 0 0 10px;
+
+  color: #7a6755;
+
+  font-size: 0.9rem;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.06em;
+}
+
+.stat-card h3 {
+  margin: 0;
+
+  font-size: 2.5rem;
+
+  line-height: 1;
+}
+
+.hero-card,
+.pet-card,
+.stat-card,
+.activity-feed {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.hero-card:hover,
+.pet-card:hover,
+.stat-card:hover,
+.activity-feed:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 24px 60px rgba(70, 45, 20, 0.12);
+
+  border-color: #dcbf9f;
+}
+
+button {
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.meal-form-card {
+  background: #fffaf3;
+  border: 2px solid #ead9c5;
+  border-radius: 28px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.08);
+}
+
+.meal-form-card h2 {
+  margin: 0 0 20px;
+  font-size: 2rem;
+}
+
+.meal-form {
+  display: grid;
+  gap: 16px;
+}
+
+.meal-form label {
+  display: grid;
+  gap: 8px;
+  font-weight: 800;
+  color: #6c5845;
+}
+
+.meal-form select,
+.meal-form textarea {
+  width: 100%;
+  border: 2px solid #ead9c5;
+  border-radius: 16px;
+  padding: 14px;
+  font: inherit;
+  background: white;
+  color: #2b2118;
+}
+
+.meal-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
 @media (max-width: 900px) {
 
   .dashboard-layout {
