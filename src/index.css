@@ -365,6 +365,22 @@ button:hover {
   color: #2b2118;
 }
 
+.meal-form input {
+  width: 100%;
+
+  border: 2px solid #ead9c5;
+
+  border-radius: 16px;
+
+  padding: 14px;
+
+  font: inherit;
+
+  background: white;
+
+  color: #2b2118;
+}
+
 @media (max-width: 900px) {
 
   .dashboard-layout {

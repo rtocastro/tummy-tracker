@@ -7,6 +7,7 @@ import PetCard from "./components/PetCard";
 import StatsBar from "./components/StatsBar";
 import MealForm from "./components/MealForm";
 import ActivityFeed from "./components/ActivityFeed";
+import AddPetForm from "./components/AddPetForm";
 
 import { pets as startingPets } from "./data/pets";
 
@@ -78,6 +79,13 @@ useEffect(() => {
   localStorage.removeItem("tummyTrackerPets");
 }
 
+function handleAddPet(newPet) {
+  setPets((currentPets) => [
+    ...currentPets,
+    newPet,
+  ]);
+}
+
   function getSavedData(key, fallbackData) {
   const savedData = localStorage.getItem(key);
 
@@ -100,6 +108,8 @@ useEffect(() => {
             <StatsBar entries={entries} pets={pets} />
 
             <MealForm onAddEntry={handleAddEntry} />
+
+            <AddPetForm onAddPet={handleAddPet} />
 
             <section className="pet-grid">
               {pets.map((pet) => (
