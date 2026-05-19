@@ -27,6 +27,7 @@ function MealForm({ onAddEntry, pets }) {
             mealType: formData.mealType,
             appetite: formData.appetite,
             notes: formData.notes,
+            createdAt: Date.now(),
             time: new Date().toLocaleTimeString([], {
                 hour: "numeric",
                 minute: "2-digit",

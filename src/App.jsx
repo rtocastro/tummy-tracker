@@ -11,6 +11,14 @@ import AddPetForm from "./components/AddPetForm";
 
 import { pets as startingPets } from "./data/pets";
 
+import {
+  saveEntry,
+  loadEntries,
+  savePet,
+  loadPets,
+} from "./services/firestore";
+
+
 const startingEntries = [
   {
     id: 1,
@@ -32,6 +40,16 @@ const startingEntries = [
   },
 ];
 
+function getSavedData(key, fallbackData) {
+  const savedData = localStorage.getItem(key);
+
+  if (!savedData) {
+    return fallbackData;
+  }
+
+  return JSON.parse(savedData);
+}
+
 function App() {
   const [entries, setEntries] = useState(() =>
     getSavedData("tummyTrackerEntries", startingEntries)
@@ -49,8 +67,33 @@ function App() {
     localStorage.setItem("tummyTrackerPets", JSON.stringify(pets));
   }, [pets]);
 
+  useEffect(() => {
+    async function fetchEntries() {
+      const firestoreEntries = await loadEntries();
 
-  function handleAddEntry(newEntry) {
+      if (firestoreEntries.length > 0) {
+        setEntries(firestoreEntries);
+      }
+    }
+
+    fetchEntries();
+  }, []);
+
+  useEffect(() => {
+  async function fetchPets() {
+    const firestorePets = await loadPets();
+
+    if (firestorePets.length > 0) {
+      setPets(firestorePets);
+    }
+  }
+
+  fetchPets();
+}, []);
+
+  async function handleAddEntry(newEntry) {
+    await saveEntry(newEntry);
+
     setEntries((currentEntries) => [newEntry, ...currentEntries]);
 
     setPets((currentPets) =>
@@ -79,22 +122,14 @@ function App() {
     localStorage.removeItem("tummyTrackerPets");
   }
 
-  function handleAddPet(newPet) {
-    setPets((currentPets) => [
-      ...currentPets,
-      newPet,
-    ]);
-  }
+async function handleAddPet(newPet) {
+  await savePet(newPet);
 
-  function getSavedData(key, fallbackData) {
-    const savedData = localStorage.getItem(key);
-
-    if (!savedData) {
-      return fallbackData;
-    }
-
-    return JSON.parse(savedData);
-  }
+  setPets((currentPets) => [
+    ...currentPets,
+    newPet,
+  ]);
+}
 
   return (
     <main className="app-shell">
@@ -107,10 +142,7 @@ function App() {
 
             <StatsBar entries={entries} pets={pets} />
 
-            <MealForm
-              onAddEntry={handleAddEntry}
-              pets={pets}
-            />
+            <MealForm onAddEntry={handleAddEntry} pets={pets} />
 
             <AddPetForm onAddPet={handleAddPet} />
 
