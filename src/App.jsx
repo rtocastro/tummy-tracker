@@ -13,16 +13,19 @@ import { pets as startingPets } from "./data/pets";
 const startingEntries = [
   {
     id: 1,
+    type: "meal",
     time: "8:12 AM",
     text: "Mochi finished breakfast.",
   },
   {
     id: 2,
+    type: "meal",
     time: "1:45 PM",
     text: "Bean skipped lunch.",
   },
   {
     id: 3,
+    type: "water",
     time: "4:20 PM",
     text: "Water bowl refilled.",
   },
@@ -62,7 +65,7 @@ function App() {
           <section>
             <Hero />
 
-            <StatsBar />
+            <StatsBar entries={entries} pets={pets} />
 
             <MealForm onAddEntry={handleAddEntry} />
 

@@ -20,18 +20,19 @@ function MealForm({ onAddEntry }) {
   function handleSubmit(event) {
     event.preventDefault();
 
-    const newEntry = {
-      id: Date.now(),
-      petName: formData.petName,
-      mealType: formData.mealType,
-      appetite: formData.appetite,
-      notes: formData.notes,
-      time: new Date().toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "2-digit",
-      }),
-      text: `${formData.petName} logged ${formData.mealType.toLowerCase()} — ${formData.appetite.toLowerCase()}.`,
-    };
+const newEntry = {
+  id: Date.now(),
+  type: "meal",
+  petName: formData.petName,
+  mealType: formData.mealType,
+  appetite: formData.appetite,
+  notes: formData.notes,
+  time: new Date().toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  }),
+  text: `${formData.petName} logged ${formData.mealType.toLowerCase()} — ${formData.appetite.toLowerCase()}.`,
+};
 
     onAddEntry(newEntry);
 
