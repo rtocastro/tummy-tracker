@@ -70,6 +70,14 @@ useEffect(() => {
     );
   }
 
+  function handleResetApp() {
+  setEntries(startingEntries);
+  setPets(startingPets);
+
+  localStorage.removeItem("tummyTrackerEntries");
+  localStorage.removeItem("tummyTrackerPets");
+}
+
   function getSavedData(key, fallbackData) {
   const savedData = localStorage.getItem(key);
 
@@ -82,7 +90,7 @@ useEffect(() => {
 
   return (
     <main className="app-shell">
-      <Navbar />
+      <Navbar onResetApp={handleResetApp} />
 
       <div className="content-container">
         <div className="dashboard-layout">

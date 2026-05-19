@@ -1,4 +1,4 @@
-function Navbar() {
+function Navbar({ onResetApp }) {
   return (
     <nav className="navbar">
       <div className="logo-group">
@@ -6,15 +6,17 @@ function Navbar() {
 
         <div>
           <p className="logo-title">Tummy Tracker</p>
-          <p className="logo-subtitle">
-            Pet wellness dashboard
-          </p>
+          <p className="logo-subtitle">Pet wellness dashboard</p>
         </div>
       </div>
 
-      <button className="nav-button">
-        + Add Entry
-      </button>
+      <div className="nav-actions">
+        <button className="nav-button">+ Add Entry</button>
+
+        <button className="reset-button" onClick={onResetApp}>
+          Reset
+        </button>
+      </div>
     </nav>
   );
 }

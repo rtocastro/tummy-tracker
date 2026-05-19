@@ -354,6 +354,17 @@ button:hover {
   resize: vertical;
 }
 
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.reset-button {
+  background: #ead9c5;
+  color: #2b2118;
+}
+
 @media (max-width: 900px) {
 
   .dashboard-layout {
