@@ -4,6 +4,8 @@ import {
   getDocs,
   query,
   orderBy,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -40,4 +42,15 @@ export async function loadPets() {
     id: doc.id,
     ...doc.data(),
   }));
+
+  export async function clearCollection(collectionName) {
+  const snapshot = await getDocs(collection(db, collectionName));
+
+  const deletePromises = snapshot.docs.map((document) =>
+    deleteDoc(doc(db, collectionName, document.id))
+  );
+
+  await Promise.all(deletePromises);
+}
+
 }

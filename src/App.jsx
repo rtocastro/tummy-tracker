@@ -16,6 +16,7 @@ import {
   loadEntries,
   savePet,
   loadPets,
+  clearCollection,
 } from "./services/firestore";
 
 
@@ -114,13 +115,16 @@ function App() {
     );
   }
 
-  function handleResetApp() {
-    setEntries(startingEntries);
-    setPets(startingPets);
+async function handleResetApp() {
+  await clearCollection("entries");
+  await clearCollection("pets");
 
-    localStorage.removeItem("tummyTrackerEntries");
-    localStorage.removeItem("tummyTrackerPets");
-  }
+  setEntries(startingEntries);
+  setPets(startingPets);
+
+  localStorage.removeItem("tummyTrackerEntries");
+  localStorage.removeItem("tummyTrackerPets");
+}
 
 async function handleAddPet(newPet) {
   await savePet(newPet);
