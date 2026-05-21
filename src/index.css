@@ -387,6 +387,25 @@ button:hover {
   color: #2b2118;
 }
 
+.small-delete-button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #ead9c5;
+  color: #2b2118;
+  font-size: 0.8rem;
+
+  .pet-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.edit-button {
+  background: #2f8f6b;
+  color: white;
+}
+
+}
 @media (max-width: 900px) {
 
   .dashboard-layout {
@@ -400,10 +419,3 @@ button:hover {
 
 }
 
-.small-delete-button {
-  margin-top: 8px;
-  padding: 8px 12px;
-  background: #ead9c5;
-  color: #2b2118;
-  font-size: 0.8rem;
-}
