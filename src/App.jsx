@@ -17,8 +17,9 @@ import {
   savePet,
   loadPets,
   clearCollection,
+  deletePet,
+  deleteEntry,
 } from "./services/firestore";
-
 
 const startingEntries = [
   {
@@ -81,16 +82,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-  async function fetchPets() {
-    const firestorePets = await loadPets();
+    async function fetchPets() {
+      const firestorePets = await loadPets();
 
-    if (firestorePets.length > 0) {
-      setPets(firestorePets);
+      if (firestorePets.length > 0) {
+        setPets(firestorePets);
+      }
     }
-  }
 
-  fetchPets();
-}, []);
+    fetchPets();
+  }, []);
 
   async function handleAddEntry(newEntry) {
     await saveEntry(newEntry);
@@ -115,25 +116,48 @@ function App() {
     );
   }
 
-async function handleResetApp() {
-  await clearCollection("entries");
-  await clearCollection("pets");
+  async function handleResetApp() {
+    await clearCollection("entries");
+    await clearCollection("pets");
 
-  setEntries(startingEntries);
-  setPets(startingPets);
+    setEntries(startingEntries);
+    setPets(startingPets);
 
-  localStorage.removeItem("tummyTrackerEntries");
-  localStorage.removeItem("tummyTrackerPets");
-}
+    localStorage.removeItem("tummyTrackerEntries");
+    localStorage.removeItem("tummyTrackerPets");
+  }
 
-async function handleAddPet(newPet) {
-  await savePet(newPet);
+  async function handleAddPet(newPet) {
+    const firestoreId = await savePet(newPet);
 
-  setPets((currentPets) => [
-    ...currentPets,
-    newPet,
-  ]);
-}
+    setPets((currentPets) => [
+      ...currentPets,
+      {
+        ...newPet,
+        firestoreId,
+      },
+    ]);
+  }
+
+  async function handleDeletePet(pet) {
+    if (pet.firestoreId) {
+      await deletePet(pet.firestoreId);
+    }
+
+    setPets((currentPets) =>
+      currentPets.filter((currentPet) => currentPet.id !== pet.id)
+    );
+  }
+
+  async function handleDeleteEntry(entry) {
+    if (entry.firestoreId) {
+      await deleteEntry(entry.firestoreId);
+    }
+
+    setEntries((currentEntries) =>
+      currentEntries.filter((currentEntry) => currentEntry.id !== entry.id)
+    );
+  }
 
   return (
     <main className="app-shell">
@@ -152,12 +176,19 @@ async function handleAddPet(newPet) {
 
             <section className="pet-grid">
               {pets.map((pet) => (
-                <PetCard key={pet.id} pet={pet} />
+                <PetCard
+                  key={pet.id}
+                  pet={pet}
+                  onDeletePet={handleDeletePet}
+                />
               ))}
             </section>
           </section>
 
-          <ActivityFeed entries={entries} />
+          <ActivityFeed
+            entries={entries}
+            onDeleteEntry={handleDeleteEntry}
+          />
         </div>
       </div>
     </main>

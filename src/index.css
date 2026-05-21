@@ -381,6 +381,12 @@ button:hover {
   color: #2b2118;
 }
 
+.delete-button {
+  margin-top: 18px;
+  background: #ead9c5;
+  color: #2b2118;
+}
+
 @media (max-width: 900px) {
 
   .dashboard-layout {
@@ -392,4 +398,12 @@ button:hover {
     top: unset;
   }
 
+}
+
+.small-delete-button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #ead9c5;
+  color: #2b2118;
+  font-size: 0.8rem;
 }

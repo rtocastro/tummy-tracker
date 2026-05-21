@@ -1,103 +1,112 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MealForm({ onAddEntry, pets }) {
-    const [formData, setFormData] = useState({
-        petName: "Mochi",
-        mealType: "Breakfast",
-        appetite: "Ate all",
-        notes: "",
-    });
+  const [formData, setFormData] = useState({
+    petName: "",
+    mealType: "Breakfast",
+    appetite: "Ate all",
+    notes: "",
+  });
 
-    function handleChange(event) {
-        const { name, value } = event.target;
-
-        setFormData((currentData) => ({
-            ...currentData,
-            [name]: value,
-        }));
+  useEffect(() => {
+    if (pets.length > 0 && !formData.petName) {
+      setFormData((currentData) => ({
+        ...currentData,
+        petName: pets[0].name,
+      }));
     }
+  }, [pets, formData.petName]);
 
-    function handleSubmit(event) {
-        event.preventDefault();
+  function handleChange(event) {
+    const { name, value } = event.target;
 
-        const newEntry = {
-            id: Date.now(),
-            type: "meal",
-            petName: formData.petName,
-            mealType: formData.mealType,
-            appetite: formData.appetite,
-            notes: formData.notes,
-            createdAt: Date.now(),
-            time: new Date().toLocaleTimeString([], {
-                hour: "numeric",
-                minute: "2-digit",
-            }),
-            text: `${formData.petName} logged ${formData.mealType.toLowerCase()} — ${formData.appetite.toLowerCase()}.`,
-        };
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: value,
+    }));
+  }
 
-        onAddEntry(newEntry);
+  function handleSubmit(event) {
+    event.preventDefault();
 
-        setFormData({
-            petName: "Mochi",
-            mealType: "Breakfast",
-            appetite: "Ate all",
-            notes: "",
-        });
-    }
+    const newEntry = {
+      id: Date.now(),
+      type: "meal",
+      petName: formData.petName,
+      mealType: formData.mealType,
+      appetite: formData.appetite,
+      notes: formData.notes,
+      createdAt: Date.now(),
+      time: new Date().toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+      }),
+      text: `${formData.petName} logged ${formData.mealType.toLowerCase()} — ${formData.appetite.toLowerCase()}.`,
+    };
 
-    return (
-        <section className="meal-form-card">
-            <div>
-                <p className="eyebrow">Quick Log</p>
-                <h2>Log a meal</h2>
-            </div>
+    onAddEntry(newEntry);
 
-            <form className="meal-form" onSubmit={handleSubmit}>
-                <label>
-                    Pet name
-                    <select name="petName" value={formData.petName} onChange={handleChange}>
-                        {pets.map((pet) => (
-                            <option key={pet.id}>
-                                {pet.name}
-                            </option>
-                        ))}
-                    </select>
-                </label>
+    setFormData((currentData) => ({
+      ...currentData,
+      mealType: "Breakfast",
+      appetite: "Ate all",
+      notes: "",
+    }));
+  }
 
-                <label>
-                    Meal type
-                    <select name="mealType" value={formData.mealType} onChange={handleChange}>
-                        <option>Breakfast</option>
-                        <option>Lunch</option>
-                        <option>Dinner</option>
-                        <option>Snack</option>
-                    </select>
-                </label>
+  return (
+    <section className="meal-form-card">
+      <div>
+        <p className="eyebrow">Quick Log</p>
+        <h2>Log a meal</h2>
+      </div>
 
-                <label>
-                    Appetite
-                    <select name="appetite" value={formData.appetite} onChange={handleChange}>
-                        <option>Ate all</option>
-                        <option>Ate some</option>
-                        <option>Refused</option>
-                        <option>Vomited</option>
-                    </select>
-                </label>
+      <form className="meal-form" onSubmit={handleSubmit}>
+        <label>
+          Pet name
+          <select name="petName" value={formData.petName} onChange={handleChange}>
+            {pets.map((pet) => (
+              <option key={pet.id} value={pet.name}>
+                {pet.name}
+              </option>
+            ))}
+          </select>
+        </label>
 
-                <label>
-                    Notes
-                    <textarea
-                        name="notes"
-                        value={formData.notes}
-                        onChange={handleChange}
-                        placeholder="Example: ate slower than usual, seemed tired..."
-                    />
-                </label>
+        <label>
+          Meal type
+          <select name="mealType" value={formData.mealType} onChange={handleChange}>
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Snack</option>
+          </select>
+        </label>
 
-                <button type="submit">Save meal</button>
-            </form>
-        </section>
-    );
+        <label>
+          Appetite
+          <select name="appetite" value={formData.appetite} onChange={handleChange}>
+            <option>Ate all</option>
+            <option>Ate some</option>
+            <option>Refused</option>
+            <option>Vomited</option>
+          </select>
+        </label>
+
+        <label>
+          Notes
+          <textarea
+            name="notes"
+            value={formData.notes}
+            onChange={handleChange}
+            placeholder="Example: ate slower than usual, seemed tired..."
+          />
+        </label>
+
+        <button type="submit">Save meal</button>
+      </form>
+    </section>
+  );
 }
 
 export default MealForm;

@@ -1,4 +1,4 @@
-function ActivityFeed({ entries = [] }) {
+function ActivityFeed({ entries = [], onDeleteEntry }) {
   return (
     <aside className="activity-feed">
       <div className="feed-header">
@@ -9,6 +9,13 @@ function ActivityFeed({ entries = [] }) {
         <div className="activity-item" key={entry.id}>
           <p className="activity-time">{entry.time}</p>
           <p>{entry.text}</p>
+
+          <button
+            className="small-delete-button"
+            onClick={() => onDeleteEntry(entry)}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </aside>
