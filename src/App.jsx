@@ -19,6 +19,7 @@ import {
   clearCollection,
   deletePet,
   deleteEntry,
+  updatePet,
 } from "./services/firestore";
 
 const startingEntries = [
@@ -149,6 +150,24 @@ function App() {
     );
   }
 
+  async function handleUpdatePet(updatedPet) {
+    if (updatedPet.firestoreId) {
+      await updatePet(updatedPet.firestoreId, {
+        name: updatedPet.name,
+        type: updatedPet.type,
+        status: updatedPet.status,
+        appetite: updatedPet.appetite,
+        id: updatedPet.id,
+      });
+    }
+
+    setPets((currentPets) =>
+      currentPets.map((pet) =>
+        pet.id === updatedPet.id ? updatedPet : pet
+      )
+    );
+  }
+
   async function handleDeleteEntry(entry) {
     if (entry.firestoreId) {
       await deleteEntry(entry.firestoreId);
@@ -180,6 +199,7 @@ function App() {
                   key={pet.id}
                   pet={pet}
                   onDeletePet={handleDeletePet}
+                  onUpdatePet={handleUpdatePet}
                 />
               ))}
             </section>

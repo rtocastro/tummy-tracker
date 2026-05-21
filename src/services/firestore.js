@@ -6,6 +6,7 @@ import {
   orderBy,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -57,4 +58,8 @@ export async function deletePet(firestoreId) {
 
 export async function deleteEntry(firestoreId) {
   await deleteDoc(doc(db, "entries", firestoreId));
+}
+
+export async function updatePet(firestoreId, updatedPet) {
+  await updateDoc(doc(db, "pets", firestoreId), updatedPet);
 }
