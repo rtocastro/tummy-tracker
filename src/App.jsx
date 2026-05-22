@@ -88,12 +88,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
 
-  return () => unsubscribe();
-}, []);
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     async function fetchPets() {
@@ -142,12 +142,21 @@ function App() {
   }
 
   async function handleAddPet(newPet) {
-    const firestoreId = await savePet(newPet);
+
+    if (!user) return;
+
+    const petWithUser = {
+      ...newPet,
+      userId: user.uid,
+    };
+
+    const firestoreId =
+      await savePet(petWithUser);
 
     setPets((currentPets) => [
       ...currentPets,
       {
-        ...newPet,
+        ...petWithUser,
         firestoreId,
       },
     ]);
