@@ -405,6 +405,37 @@ button:hover {
   color: white;
 }
 
+.auth-panel {
+  background: #fffaf3;
+  border: 2px solid #ead9c5;
+  border-radius: 28px;
+  padding: 28px;
+  margin-top: 20px;
+  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.08);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.auth-panel h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.auth-email {
+  margin: 8px 0 0;
+  color: #6c5845;
+}
+
+@media (max-width: 700px) {
+  .auth-panel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 }
 @media (max-width: 900px) {
 

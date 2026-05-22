@@ -8,6 +8,9 @@ import StatsBar from "./components/StatsBar";
 import MealForm from "./components/MealForm";
 import ActivityFeed from "./components/ActivityFeed";
 import AddPetForm from "./components/AddPetForm";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import AuthPanel from "./components/AuthPanel";
 
 import { pets as startingPets } from "./data/pets";
 
@@ -62,6 +65,8 @@ function App() {
     getSavedData("tummyTrackerPets", startingPets)
   );
 
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
   }, [entries]);
@@ -81,6 +86,14 @@ function App() {
 
     fetchEntries();
   }, []);
+
+  useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  return () => unsubscribe();
+}, []);
 
   useEffect(() => {
     async function fetchPets() {
@@ -186,6 +199,7 @@ function App() {
         <div className="dashboard-layout">
           <section>
             <Hero />
+            <AuthPanel user={user} />
 
             <StatsBar entries={entries} pets={pets} />
 
