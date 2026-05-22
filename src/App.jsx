@@ -108,9 +108,16 @@ function App() {
   }, []);
 
   async function handleAddEntry(newEntry) {
-    await saveEntry(newEntry);
+    const entryWithUser = {
+      ...newEntry,
+      userId: user.uid,
+    };
 
-    setEntries((currentEntries) => [newEntry, ...currentEntries]);
+    await saveEntry(entryWithUser);
+
+    if (!user) return;
+
+    setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
 
     setPets((currentPets) =>
       currentPets.map((pet) => {
