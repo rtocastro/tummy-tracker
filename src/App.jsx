@@ -11,6 +11,7 @@ import AddPetForm from "./components/AddPetForm";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import AuthPanel from "./components/AuthPanel";
+import SplashScreen from "./components/SplashScreen";
 
 import { pets as startingPets } from "./data/pets";
 
@@ -69,14 +70,16 @@ function App() {
   const [user, setUser] = useState(null);
 
   const mealFormRef = useRef(null);
-const addPetFormRef = useRef(null);
+  const addPetFormRef = useRef(null);
 
-function scrollToSection(ref) {
-  ref.current?.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
+  const [showSplash, setShowSplash] = useState(true);
+
+  function scrollToSection(ref) {
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
 
   useEffect(() => {
@@ -128,6 +131,14 @@ function scrollToSection(ref) {
 
     fetchPets();
   }, [user]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 3300);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   async function handleAddEntry(newEntry) {
     if (!user) return;
@@ -228,51 +239,55 @@ function scrollToSection(ref) {
     );
   }
 
-  return (
-    <main className="app-shell">
-      <Navbar
-        onResetApp={handleResetApp}
-        onAddEntryClick={() => scrollToSection(mealFormRef)}
-      />
+if (showSplash) {
+  return <SplashScreen />;
+}
 
-      <div className="content-container">
-        <div className="dashboard-layout">
-          <section>
-            <Hero
-              onLogMealClick={() => scrollToSection(mealFormRef)}
-              onAddPetClick={() => scrollToSection(addPetFormRef)}
-            />
-            <AuthPanel user={user} />
+return (
+  <main className="app-shell">
+    <Navbar
+      onResetApp={handleResetApp}
+      onAddEntryClick={() => scrollToSection(mealFormRef)}
+    />
 
-            <StatsBar entries={entries} pets={pets} />
-
-            <div ref={mealFormRef}>
-              <MealForm onAddEntry={handleAddEntry} pets={pets} />
-            </div>
-
-            <div ref={addPetFormRef}>
-              <AddPetForm onAddPet={handleAddPet} />
-            </div>
-
-            <section className="pet-grid">
-              {pets.map((pet) => (
-                <PetCard
-                  key={pet.id}
-                  pet={pet}
-                  onDeletePet={handleDeletePet}
-                  onUpdatePet={handleUpdatePet}
-                />
-              ))}
-            </section>
-          </section>
-
-          <ActivityFeed
-            entries={entries}
-            onDeleteEntry={handleDeleteEntry}
+    <div className="content-container">
+      <div className="dashboard-layout">
+        <section>
+          <Hero
+            onLogMealClick={() => scrollToSection(mealFormRef)}
+            onAddPetClick={() => scrollToSection(addPetFormRef)}
           />
-        </div>
+          <AuthPanel user={user} />
+
+          <StatsBar entries={entries} pets={pets} />
+
+          <div ref={mealFormRef}>
+            <MealForm onAddEntry={handleAddEntry} pets={pets} />
+          </div>
+
+          <div ref={addPetFormRef}>
+            <AddPetForm onAddPet={handleAddPet} />
+          </div>
+
+          <section className="pet-grid">
+            {pets.map((pet) => (
+              <PetCard
+                key={pet.id}
+                pet={pet}
+                onDeletePet={handleDeletePet}
+                onUpdatePet={handleUpdatePet}
+              />
+            ))}
+          </section>
+        </section>
+
+        <ActivityFeed
+          entries={entries}
+          onDeleteEntry={handleDeleteEntry}
+        />
       </div>
-    </main>
+    </div>
+  </main>
   );
 }
 

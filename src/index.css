@@ -380,6 +380,63 @@ button.secondary,
   border-color: var(--teal);
 }
 
+/* SPLASH SCREEN */
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #11c7b0 0%,
+    #0db5a0 100%
+  );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 9999;
+
+  animation: splashFade 0.7s ease forwards;
+  animation-delay: 1.7s;
+}
+
+.splash-content {
+  animation: splashPop 0.9s ease-out;
+}
+
+.splash-logo {
+  width: 320px;
+  max-width: 80vw;
+
+  filter: drop-shadow(
+    0 12px 30px rgba(0, 0, 0, 0.18)
+  );
+}
+
+@keyframes splashPop {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes splashFade {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @media (max-width: 900px) {
   .dashboard-layout {
     grid-template-columns: 1fr;
