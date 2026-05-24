@@ -2,117 +2,38 @@
   box-sizing: border-box;
 }
 
+:root {
+  --teal: #10c7b0;
+  --teal-dark: #079a89;
+  --teal-soft: #dffaf6;
+
+  --orange: #3E815E;
+  --orange-dark: #573B38;
+  --orange-soft: #ffe0cc;
+
+  --white: #ffffff;
+  --page: #f7f7f7;
+  --card: #ffffff;
+
+  --border: rgba(16, 199, 176, 0.35);
+  --text: #2d2d2d;
+  --muted: #666666;
+
+  --shadow: rgba(0, 0, 0, 0.12);
+}
+
 body {
   margin: 0;
   font-family: system-ui, Arial, sans-serif;
-  background: #f7efe5;
-  color: #2b2118;
-}
-
-.app {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-}
-
-.hero-card {
-  width: min(720px, 100%);
-  background: #fffaf3;
-  border: 2px solid #ead9c5;
-  border-radius: 28px;
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(70, 45, 20, 0.15);
-}
-
-.eyebrow {
-  margin: 0 0 12px;
-  font-weight: 800;
-  color: #c97932;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(2.5rem, 7vw, 5rem);
-  line-height: 0.95;
-}
-
-.subtext {
-  max-width: 560px;
-  margin: 24px 0;
-  font-size: 1.15rem;
-  line-height: 1.6;
-  color: #6c5845;
-}
-
-.button-row {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-button {
-  border: 0;
-  border-radius: 999px;
-  padding: 14px 22px;
-  font-weight: 800;
-  background: #2f8f6b;
-  color: white;
-  cursor: pointer;
-}
-
-button.secondary {
-  background: #ead9c5;
-  color: #2b2118;
-}
-
-.pet-grid {
-  width: min(720px, 100%);
-  display: grid;
-  gap: 16px;
-  margin-top: 24px;
-}
-
-.pet-card {
-  background: #fffaf3;
-  border: 2px solid #ead9c5;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.1);
-}
-
-.pet-card h2 {
-  margin: 0;
-  font-size: 2rem;
-}
-
-.pet-type {
-  margin: 0 0 4px;
-  color: #c97932;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.appetite-badge {
-  display: inline-block;
-  margin-top: 12px;
-  border-radius: 999px;
-  padding: 8px 14px;
-  font-weight: 800;
-  background: #ead9c5;
-}
-
-.appetite-badge.good {
-  background: #d9f5e7;
-  color: #23664b;
-}
-
-.appetite-badge.watch {
-  background: #ffe1c4;
-  color: #8a4a12;
+  background:
+    linear-gradient(
+      180deg,
+      var(--teal) 0%,
+      var(--teal) 260px,
+      var(--page) 260px,
+      var(--page) 100%
+    );
+  color: var(--text);
 }
 
 .app-shell {
@@ -128,37 +49,31 @@ button.secondary {
 .navbar {
   width: 100%;
   padding: 18px 24px;
-  border-bottom: 2px solid #ead9c5;
-
+  border-bottom: 4px solid var(--teal);
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  background: rgba(255, 250, 243, 0.85);
-
-  backdrop-filter: blur(10px);
-
+  background: var(--white);
   position: sticky;
   top: 0;
-
   z-index: 100;
 }
 
-.logo-group {
+.logo-group,
+.nav-actions,
+.pet-card-actions,
+.button-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .logo-dot {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-
-  background: #2f8f6b;
-
-  box-shadow:
-    0 0 20px rgba(47, 143, 107, 0.4);
+  background: var(--teal);
+  box-shadow: 0 0 22px rgba(16, 199, 176, 0.7);
 }
 
 .logo-title {
@@ -169,11 +84,7 @@ button.secondary {
 .logo-subtitle {
   margin: 0;
   font-size: 0.85rem;
-  color: #7a6755;
-}
-
-.nav-button {
-  background: #2f8f6b;
+  color: var(--muted);
 }
 
 .dashboard-layout {
@@ -183,20 +94,168 @@ button.secondary {
   align-items: start;
 }
 
+.hero-card,
+.pet-card,
+.stat-card,
+.activity-feed,
+.meal-form-card,
+.auth-panel {
+  background: var(--card);
+  border: 2px solid var(--border);
+  box-shadow: 0 14px 35px var(--shadow);
+}
+
+.hero-card,
+.auth-panel,
+.meal-form-card,
+.activity-feed {
+  border-radius: 28px;
+}
+
+.pet-card,
+.stat-card {
+  border-radius: 24px;
+}
+
+.hero-card {
+  width: min(720px, 100%);
+  padding: 44px;
+}
+
+.eyebrow,
+.pet-type,
+.activity-time {
+  margin: 0 0 12px;
+  font-weight: 900;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 5.2rem);
+  line-height: 0.95;
+  color: var(--text);
+}
+
+.subtext {
+  max-width: 560px;
+  margin: 24px 0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+button {
+  border: 2px solid var(--white);
+  border-radius: 999px;
+  padding: 14px 22px;
+  font-weight: 900;
+  background: var(--orange);
+  color: white;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease,
+    background 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.94;
+  background: var(--orange-dark);
+}
+
+button.secondary,
+.reset-button,
+.delete-button,
+.small-delete-button {
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  border-color: var(--teal);
+}
+
+.nav-button,
+.edit-button {
+  background: var(--orange);
+  color: white;
+}
+
+.pet-grid {
+  width: min(720px, 100%);
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pet-card,
+.stat-card,
+.meal-form-card,
+.activity-feed,
+.auth-panel {
+  padding: 24px;
+}
+
+.pet-card h2,
+.meal-form-card h2,
+.auth-panel h2 {
+  margin: 0;
+}
+
+.pet-card h2 {
+  font-size: 2rem;
+}
+
+.pet-card p {
+  color: var(--text);
+}
+
+.appetite-badge {
+  display: inline-block;
+  margin-top: 12px;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 900;
+}
+
+.appetite-badge.good {
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+}
+
+.appetite-badge.watch {
+  background: var(--orange-soft);
+  color: var(--orange-dark);
+}
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.stat-label {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--orange);
+}
+
 .activity-feed {
   position: sticky;
   top: 110px;
-
-  background: #fffaf3;
-
-  border: 2px solid #ead9c5;
-
-  border-radius: 28px;
-
-  padding: 24px;
-
-  box-shadow:
-    0 14px 40px rgba(70, 45, 20, 0.08);
 }
 
 .feed-header {
@@ -210,7 +269,7 @@ button.secondary {
 
 .activity-item {
   padding: 16px 0;
-  border-bottom: 1px solid #ead9c5;
+  border-bottom: 1px solid var(--border);
 }
 
 .activity-item:last-child {
@@ -218,111 +277,15 @@ button.secondary {
 }
 
 .activity-time {
-  margin: 0 0 6px;
-
   font-size: 0.8rem;
-
-  font-weight: 800;
-
-  letter-spacing: 0.08em;
-
-  text-transform: uppercase;
-
-  color: #c97932;
-}
-
-.stats-bar {
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(180px, 1fr));
-
-  gap: 16px;
-
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.stat-card {
-  background: #fffaf3;
-
-  border: 2px solid #ead9c5;
-
-  border-radius: 24px;
-
-  padding: 20px;
-
-  box-shadow:
-    0 14px 30px rgba(70, 45, 20, 0.06);
-}
-
-.stat-label {
-  margin: 0 0 10px;
-
-  color: #7a6755;
-
-  font-size: 0.9rem;
-
-  font-weight: 700;
-
-  text-transform: uppercase;
-
-  letter-spacing: 0.06em;
-}
-
-.stat-card h3 {
-  margin: 0;
-
-  font-size: 2.5rem;
-
-  line-height: 1;
-}
-
-.hero-card,
-.pet-card,
-.stat-card,
-.activity-feed {
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-}
-
-.hero-card:hover,
-.pet-card:hover,
-.stat-card:hover,
-.activity-feed:hover {
-
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 24px 60px rgba(70, 45, 20, 0.12);
-
-  border-color: #dcbf9f;
-}
-
-button {
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  opacity: 0.92;
 }
 
 .meal-form-card {
-  background: #fffaf3;
-  border: 2px solid #ead9c5;
-  border-radius: 28px;
-  padding: 28px;
   margin-bottom: 24px;
-  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.08);
 }
 
 .meal-form-card h2 {
-  margin: 0 0 20px;
+  margin-bottom: 20px;
   font-size: 2rem;
 }
 
@@ -334,19 +297,32 @@ button:hover {
 .meal-form label {
   display: grid;
   gap: 8px;
-  font-weight: 800;
-  color: #6c5845;
+  font-weight: 900;
+  color: var(--muted);
 }
 
+.meal-form input,
 .meal-form select,
-.meal-form textarea {
+.meal-form textarea,
+.pet-card input,
+.pet-card select {
   width: 100%;
-  border: 2px solid #ead9c5;
+  border: 2px solid var(--border);
   border-radius: 16px;
   padding: 14px;
   font: inherit;
   background: white;
-  color: #2b2118;
+  color: var(--text);
+}
+
+.meal-form input:focus,
+.meal-form select:focus,
+.meal-form textarea:focus,
+.pet-card input:focus,
+.pet-card select:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(16, 199, 176, 0.16);
 }
 
 .meal-form textarea {
@@ -354,65 +330,18 @@ button:hover {
   resize: vertical;
 }
 
-.nav-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.reset-button {
-  background: #ead9c5;
-  color: #2b2118;
-}
-
-.meal-form input {
-  width: 100%;
-
-  border: 2px solid #ead9c5;
-
-  border-radius: 16px;
-
-  padding: 14px;
-
-  font: inherit;
-
-  background: white;
-
-  color: #2b2118;
-}
-
 .delete-button {
   margin-top: 18px;
-  background: #ead9c5;
-  color: #2b2118;
 }
 
 .small-delete-button {
   margin-top: 8px;
   padding: 8px 12px;
-  background: #ead9c5;
-  color: #2b2118;
   font-size: 0.8rem;
-
-  .pet-card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.edit-button {
-  background: #2f8f6b;
-  color: white;
 }
 
 .auth-panel {
-  background: #fffaf3;
-  border: 2px solid #ead9c5;
-  border-radius: 28px;
-  padding: 28px;
   margin-top: 20px;
-  box-shadow: 0 14px 40px rgba(70, 45, 20, 0.08);
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -420,25 +349,38 @@ button:hover {
 }
 
 .auth-panel h2 {
-  margin: 0;
   font-size: 1.6rem;
 }
 
 .auth-email {
   margin: 8px 0 0;
-  color: #6c5845;
+  color: var(--muted);
 }
 
-@media (max-width: 700px) {
-  .auth-panel {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+.hero-card,
+.pet-card,
+.stat-card,
+.activity-feed,
+.meal-form-card,
+.auth-panel {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
+.hero-card:hover,
+.pet-card:hover,
+.stat-card:hover,
+.activity-feed:hover,
+.meal-form-card:hover,
+.auth-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+  border-color: var(--teal);
 }
+
 @media (max-width: 900px) {
-
   .dashboard-layout {
     grid-template-columns: 1fr;
   }
@@ -447,6 +389,18 @@ button:hover {
     position: relative;
     top: unset;
   }
-
 }
 
+@media (max-width: 700px) {
+  .auth-panel,
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-actions,
+  .pet-card-actions,
+  .button-row {
+    flex-wrap: wrap;
+  }
+}
