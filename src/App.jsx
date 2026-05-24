@@ -77,15 +77,20 @@ function App() {
 
   useEffect(() => {
     async function fetchEntries() {
-      const firestoreEntries = await loadEntries();
 
-      if (firestoreEntries.length > 0) {
-        setEntries(firestoreEntries);
+      if (!user) {
+        setEntries([]);
+        return;
       }
+
+      const firestoreEntries =
+        await loadEntries(user.uid);
+
+      setEntries(firestoreEntries);
     }
 
     fetchEntries();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -97,46 +102,51 @@ function App() {
 
   useEffect(() => {
     async function fetchPets() {
-      const firestorePets = await loadPets();
 
-      if (firestorePets.length > 0) {
-        setPets(firestorePets);
+      if (!user) {
+        setPets([]);
+        return;
       }
+
+      const firestorePets =
+        await loadPets(user.uid);
+
+      setPets(firestorePets);
     }
 
     fetchPets();
-  }, []);
+  }, [user]);
 
-async function handleAddEntry(newEntry) {
-  if (!user) return;
+  async function handleAddEntry(newEntry) {
+    if (!user) return;
 
-  const entryWithUser = {
-    ...newEntry,
-    userId: user.uid,
-  };
+    const entryWithUser = {
+      ...newEntry,
+      userId: user.uid,
+    };
 
-  await saveEntry(entryWithUser);
+    await saveEntry(entryWithUser);
 
-  setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
+    setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
 
-  setPets((currentPets) =>
-    currentPets.map((pet) => {
-      if (pet.name !== entryWithUser.petName) {
-        return pet;
-      }
+    setPets((currentPets) =>
+      currentPets.map((pet) => {
+        if (pet.name !== entryWithUser.petName) {
+          return pet;
+        }
 
-      return {
-        ...pet,
-        status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
-        appetite:
-          entryWithUser.appetite === "Ate all" ||
-          entryWithUser.appetite === "Ate some"
-            ? "Good"
-            : "Watch",
-      };
-    })
-  );
-}
+        return {
+          ...pet,
+          status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
+          appetite:
+            entryWithUser.appetite === "Ate all" ||
+              entryWithUser.appetite === "Ate some"
+              ? "Good"
+              : "Watch",
+        };
+      })
+    );
+  }
 
   async function handleResetApp() {
     await clearCollection("entries");
@@ -149,24 +159,24 @@ async function handleAddEntry(newEntry) {
     localStorage.removeItem("tummyTrackerPets");
   }
 
-async function handleAddPet(newPet) {
-  if (!user) return;
+  async function handleAddPet(newPet) {
+    if (!user) return;
 
-  const petWithUser = {
-    ...newPet,
-    userId: user.uid,
-  };
+    const petWithUser = {
+      ...newPet,
+      userId: user.uid,
+    };
 
-  const firestoreId = await savePet(petWithUser);
+    const firestoreId = await savePet(petWithUser);
 
-  setPets((currentPets) => [
-    ...currentPets,
-    {
-      ...petWithUser,
-      firestoreId,
-    },
-  ]);
-}
+    setPets((currentPets) => [
+      ...currentPets,
+      {
+        ...petWithUser,
+        firestoreId,
+      },
+    ]);
+  }
 
   async function handleDeletePet(pet) {
     if (pet.firestoreId) {

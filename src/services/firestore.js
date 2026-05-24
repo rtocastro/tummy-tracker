@@ -7,6 +7,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -18,12 +19,17 @@ export async function saveEntry(entry) {
   await addDoc(entriesCollection, entry);
 }
 
-export async function loadEntries() {
-  const entriesQuery = query(entriesCollection, orderBy("createdAt", "desc"));
+export async function loadEntries(userId) {
+  const entriesQuery = query(
+    entriesCollection,
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+
   const snapshot = await getDocs(entriesQuery);
 
   return snapshot.docs.map((document) => ({
-    firestoreId: document.id,
+    id: document.id,
     ...document.data(),
   }));
 }
@@ -33,12 +39,17 @@ export async function savePet(pet) {
   return docRef.id;
 }
 
-export async function loadPets() {
-  const snapshot = await getDocs(petsCollection);
+export async function loadPets(userId) {
+  const petsQuery = query(
+    petsCollection,
+    where("userId", "==", userId)
+  );
+
+  const snapshot = await getDocs(petsQuery);
 
   return snapshot.docs.map((document) => ({
-    firestoreId: document.id,
     ...document.data(),
+    firestoreId: document.id,
   }));
 }
 
