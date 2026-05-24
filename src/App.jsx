@@ -107,35 +107,36 @@ function App() {
     fetchPets();
   }, []);
 
-  async function handleAddEntry(newEntry) {
-    const entryWithUser = {
-      ...newEntry,
-      userId: user.uid,
-    };
+async function handleAddEntry(newEntry) {
+  if (!user) return;
 
-    await saveEntry(entryWithUser);
+  const entryWithUser = {
+    ...newEntry,
+    userId: user.uid,
+  };
 
-    if (!user) return;
+  await saveEntry(entryWithUser);
 
-    setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
+  setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
 
-    setPets((currentPets) =>
-      currentPets.map((pet) => {
-        if (pet.name !== newEntry.petName) {
-          return pet;
-        }
+  setPets((currentPets) =>
+    currentPets.map((pet) => {
+      if (pet.name !== entryWithUser.petName) {
+        return pet;
+      }
 
-        return {
-          ...pet,
-          status: `${newEntry.appetite} ${newEntry.mealType.toLowerCase()}`,
-          appetite:
-            newEntry.appetite === "Ate all" || newEntry.appetite === "Ate some"
-              ? "Good"
-              : "Watch",
-        };
-      })
-    );
-  }
+      return {
+        ...pet,
+        status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
+        appetite:
+          entryWithUser.appetite === "Ate all" ||
+          entryWithUser.appetite === "Ate some"
+            ? "Good"
+            : "Watch",
+      };
+    })
+  );
+}
 
   async function handleResetApp() {
     await clearCollection("entries");
@@ -148,26 +149,24 @@ function App() {
     localStorage.removeItem("tummyTrackerPets");
   }
 
-  async function handleAddPet(newPet) {
+async function handleAddPet(newPet) {
+  if (!user) return;
 
-    if (!user) return;
+  const petWithUser = {
+    ...newPet,
+    userId: user.uid,
+  };
 
-    const petWithUser = {
-      ...newPet,
-      userId: user.uid,
-    };
+  const firestoreId = await savePet(petWithUser);
 
-    const firestoreId =
-      await savePet(petWithUser);
-
-    setPets((currentPets) => [
-      ...currentPets,
-      {
-        ...petWithUser,
-        firestoreId,
-      },
-    ]);
-  }
+  setPets((currentPets) => [
+    ...currentPets,
+    {
+      ...petWithUser,
+      firestoreId,
+    },
+  ]);
+}
 
   async function handleDeletePet(pet) {
     if (pet.firestoreId) {
