@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
 
 import Navbar from "./components/Navbar";
@@ -46,6 +46,7 @@ const startingEntries = [
   },
 ];
 
+
 function getSavedData(key, fallbackData) {
   const savedData = localStorage.getItem(key);
 
@@ -66,6 +67,17 @@ function App() {
   );
 
   const [user, setUser] = useState(null);
+
+  const mealFormRef = useRef(null);
+const addPetFormRef = useRef(null);
+
+function scrollToSection(ref) {
+  ref.current?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
 
   useEffect(() => {
     localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
@@ -218,19 +230,29 @@ function App() {
 
   return (
     <main className="app-shell">
-      <Navbar onResetApp={handleResetApp} />
+      <Navbar
+        onResetApp={handleResetApp}
+        onAddEntryClick={() => scrollToSection(mealFormRef)}
+      />
 
       <div className="content-container">
         <div className="dashboard-layout">
           <section>
-            <Hero />
+            <Hero
+              onLogMealClick={() => scrollToSection(mealFormRef)}
+              onAddPetClick={() => scrollToSection(addPetFormRef)}
+            />
             <AuthPanel user={user} />
 
             <StatsBar entries={entries} pets={pets} />
 
-            <MealForm onAddEntry={handleAddEntry} pets={pets} />
+            <div ref={mealFormRef}>
+              <MealForm onAddEntry={handleAddEntry} pets={pets} />
+            </div>
 
-            <AddPetForm onAddPet={handleAddPet} />
+            <div ref={addPetFormRef}>
+              <AddPetForm onAddPet={handleAddPet} />
+            </div>
 
             <section className="pet-grid">
               {pets.map((pet) => (
