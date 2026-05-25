@@ -88,7 +88,7 @@ function MealForm({ onAddEntry, pets }) {
           <select name="appetite" value={formData.appetite} onChange={handleChange}>
             <option>Ate all</option>
             <option>Ate some</option>
-            <option>Refused</option>
+            <option>Refused/Ate Very little</option>
             <option>Vomited</option>
           </select>
         </label>
