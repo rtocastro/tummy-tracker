@@ -5,6 +5,7 @@ function Navbar({
   onResetApp,
   onLogMealClick,
   onAddPetClick,
+  onMedicationClick,
 }) {
   return (
     <nav className="navbar">
@@ -20,6 +21,10 @@ function Navbar({
       <div className="nav-actions">
         <button className="nav-button" onClick={onLogMealClick}>
           + Log Meal
+        </button>
+
+        <button className="nav-button" onClick={onMedicationClick}>
+          + Medication
         </button>
 
         <button className="nav-button" onClick={onAddPetClick}>
