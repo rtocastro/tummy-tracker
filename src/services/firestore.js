@@ -8,6 +8,7 @@ import {
   doc,
   updateDoc,
   where,
+  onSnapshot,
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -17,6 +18,23 @@ const petsCollection = collection(db, "pets");
 
 export async function saveEntry(entry) {
   await addDoc(entriesCollection, entry);
+}
+
+export function subscribeToEntries(userId, callback) {
+  const entriesQuery = query(
+    entriesCollection,
+    where("userId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+
+  return onSnapshot(entriesQuery, (snapshot) => {
+    const entries = snapshot.docs.map((document) => ({
+      ...document.data(),
+      firestoreId: document.id,
+    }));
+
+    callback(entries);
+  });
 }
 
 export async function loadEntries(userId) {
@@ -29,8 +47,8 @@ export async function loadEntries(userId) {
   const snapshot = await getDocs(entriesQuery);
 
   return snapshot.docs.map((document) => ({
-    id: document.id,
     ...document.data(),
+    firestoreId: document.id,
   }));
 }
 
@@ -39,11 +57,21 @@ export async function savePet(pet) {
   return docRef.id;
 }
 
+export function subscribeToPets(userId, callback) {
+  const petsQuery = query(petsCollection, where("userId", "==", userId));
+
+  return onSnapshot(petsQuery, (snapshot) => {
+    const pets = snapshot.docs.map((document) => ({
+      ...document.data(),
+      firestoreId: document.id,
+    }));
+
+    callback(pets);
+  });
+}
+
 export async function loadPets(userId) {
-  const petsQuery = query(
-    petsCollection,
-    where("userId", "==", userId)
-  );
+  const petsQuery = query(petsCollection, where("userId", "==", userId));
 
   const snapshot = await getDocs(petsQuery);
 

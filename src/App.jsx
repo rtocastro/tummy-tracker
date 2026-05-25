@@ -17,13 +17,13 @@ import { pets as startingPets } from "./data/pets";
 
 import {
   saveEntry,
-  loadEntries,
   savePet,
-  loadPets,
   clearCollection,
   deletePet,
   deleteEntry,
   updatePet,
+  subscribeToEntries,
+  subscribeToPets,
 } from "./services/firestore";
 
 const startingEntries = [
@@ -91,21 +91,26 @@ function App() {
   }, [pets]);
 
   useEffect(() => {
-    async function fetchEntries() {
+  if (!user) {
+    setEntries([]);
+    return;
+  }
 
-      if (!user) {
-        setEntries([]);
-        return;
-      }
+  const unsubscribe = subscribeToEntries(user.uid, setEntries);
 
-      const firestoreEntries =
-        await loadEntries(user.uid);
+  return () => unsubscribe();
+}, [user]);
 
-      setEntries(firestoreEntries);
-    }
+useEffect(() => {
+  if (!user) {
+    setPets([]);
+    return;
+  }
 
-    fetchEntries();
-  }, [user]);
+  const unsubscribe = subscribeToPets(user.uid, setPets);
+
+  return () => unsubscribe();
+}, [user]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -115,22 +120,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    async function fetchPets() {
 
-      if (!user) {
-        setPets([]);
-        return;
-      }
-
-      const firestorePets =
-        await loadPets(user.uid);
-
-      setPets(firestorePets);
-    }
-
-    fetchPets();
-  }, [user]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -148,9 +138,7 @@ function App() {
       userId: user.uid,
     };
 
-    await saveEntry(entryWithUser);
-
-    setEntries((currentEntries) => [entryWithUser, ...currentEntries]);
+await saveEntry(entryWithUser);
 
     setPets((currentPets) =>
       currentPets.map((pet) => {
