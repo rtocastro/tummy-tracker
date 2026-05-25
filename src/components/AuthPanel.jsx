@@ -1,20 +1,25 @@
-import {
-  signInWithPopup,
-  signOut,
-} from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
 
-import {
-  auth,
-  googleProvider,
-} from "../firebase";
-
-function AuthPanel({ user }) {
+function AuthPanel({ user, compact = false }) {
   async function handleSignIn() {
     await signInWithPopup(auth, googleProvider);
   }
 
   async function handleSignOut() {
     await signOut(auth);
+  }
+
+  if (compact) {
+    return user ? (
+      <button className="auth-nav-button" onClick={handleSignOut}>
+        Sign out
+      </button>
+    ) : (
+      <button className="auth-nav-button" onClick={handleSignIn}>
+        Sign in
+      </button>
+    );
   }
 
   return (
@@ -27,10 +32,7 @@ function AuthPanel({ user }) {
             <p className="auth-email">{user.email}</p>
           </div>
 
-          <button
-            className="reset-button"
-            onClick={handleSignOut}
-          >
+          <button className="reset-button" onClick={handleSignOut}>
             Sign out
           </button>
         </>
@@ -41,9 +43,7 @@ function AuthPanel({ user }) {
             <h2>Sign in to sync your dashboard.</h2>
           </div>
 
-          <button onClick={handleSignIn}>
-            Sign in with Google
-          </button>
+          <button onClick={handleSignIn}>Sign in with Google</button>
         </>
       )}
     </section>
