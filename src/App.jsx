@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import PetCard from "./components/PetCard";
@@ -9,9 +12,8 @@ import MealForm from "./components/MealForm";
 import ActivityFeed from "./components/ActivityFeed";
 import AddPetForm from "./components/AddPetForm";
 import Modal from "./components/Modal";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
 import SplashScreen from "./components/SplashScreen";
+import MedicationForm from "./components/MedicationForm";
 
 import { pets as startingPets } from "./data/pets";
 
@@ -71,6 +73,7 @@ function App() {
 
   const [isMealModalOpen, setIsMealModalOpen] = useState(false);
   const [isPetModalOpen, setIsPetModalOpen] = useState(false);
+  const [isMedicationModalOpen, setIsMedicationModalOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
@@ -136,7 +139,7 @@ function App() {
         status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
         appetite:
           entryWithUser.appetite === "Ate all" ||
-          entryWithUser.appetite === "Ate some"
+            entryWithUser.appetite === "Ate some"
             ? "Good"
             : "Watch",
       });
@@ -220,6 +223,7 @@ function App() {
         onResetApp={handleResetApp}
         onLogMealClick={() => setIsMealModalOpen(true)}
         onAddPetClick={() => setIsPetModalOpen(true)}
+        onMedicationClick={() => setIsMedicationModalOpen(true)}
       />
 
       <div className="content-container">
@@ -278,6 +282,21 @@ function App() {
           }}
         />
       </Modal>
+
+      <Modal
+        title="Log medication"
+        isOpen={isMedicationModalOpen}
+        onClose={() => setIsMedicationModalOpen(false)}
+      >
+        <MedicationForm
+          pets={pets}
+          onAddEntry={(entry) => {
+            handleAddEntry(entry);
+            setIsMedicationModalOpen(false);
+          }}
+        />
+      </Modal>
+
     </main>
   );
 }
