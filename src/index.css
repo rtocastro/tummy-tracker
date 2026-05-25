@@ -414,6 +414,89 @@ button.secondary,
   );
 }
 
+.auth-nav-button {
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* MODAL */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.58);
+}
+
+.app-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 1001;
+
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+
+  transform: translate(-50%, -50%);
+
+  background: var(--card);
+  color: var(--text);
+
+  border: 2px solid var(--border);
+  border-radius: 28px;
+  padding: 24px;
+
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+}
+
+.modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  background: var(--card);
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-close-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid var(--teal);
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .app-modal {
+    top: 16px;
+    transform: translateX(-50%);
+    max-height: calc(100vh - 32px);
+  }
+}
+
 @keyframes splashPop {
   0% {
     transform: scale(0.7);

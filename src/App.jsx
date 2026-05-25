@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 
 import Navbar from "./components/Navbar";
@@ -8,9 +8,9 @@ import StatsBar from "./components/StatsBar";
 import MealForm from "./components/MealForm";
 import ActivityFeed from "./components/ActivityFeed";
 import AddPetForm from "./components/AddPetForm";
+import Modal from "./components/Modal";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import AuthPanel from "./components/AuthPanel";
 import SplashScreen from "./components/SplashScreen";
 
 import { pets as startingPets } from "./data/pets";
@@ -47,7 +47,6 @@ const startingEntries = [
   },
 ];
 
-
 function getSavedData(key, fallbackData) {
   const savedData = localStorage.getItem(key);
 
@@ -68,19 +67,10 @@ function App() {
   );
 
   const [user, setUser] = useState(null);
-
-  const mealFormRef = useRef(null);
-  const addPetFormRef = useRef(null);
-
   const [showSplash, setShowSplash] = useState(true);
 
-  function scrollToSection(ref) {
-    ref.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  }
-
+  const [isMealModalOpen, setIsMealModalOpen] = useState(false);
+  const [isPetModalOpen, setIsPetModalOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("tummyTrackerEntries", JSON.stringify(entries));
@@ -91,26 +81,26 @@ function App() {
   }, [pets]);
 
   useEffect(() => {
-  if (!user) {
-    setEntries([]);
-    return;
-  }
+    if (!user) {
+      setEntries([]);
+      return;
+    }
 
-  const unsubscribe = subscribeToEntries(user.uid, setEntries);
+    const unsubscribe = subscribeToEntries(user.uid, setEntries);
 
-  return () => unsubscribe();
-}, [user]);
+    return () => unsubscribe();
+  }, [user]);
 
-useEffect(() => {
-  if (!user) {
-    setPets([]);
-    return;
-  }
+  useEffect(() => {
+    if (!user) {
+      setPets([]);
+      return;
+    }
 
-  const unsubscribe = subscribeToPets(user.uid, setPets);
+    const unsubscribe = subscribeToPets(user.uid, setPets);
 
-  return () => unsubscribe();
-}, [user]);
+    return () => unsubscribe();
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -119,8 +109,6 @@ useEffect(() => {
 
     return () => unsubscribe();
   }, []);
-
-
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -138,25 +126,21 @@ useEffect(() => {
       userId: user.uid,
     };
 
-await saveEntry(entryWithUser);
+    await saveEntry(entryWithUser);
 
-    setPets((currentPets) =>
-      currentPets.map((pet) => {
-        if (pet.name !== entryWithUser.petName) {
-          return pet;
-        }
+    const matchingPet = pets.find((pet) => pet.name === entryWithUser.petName);
 
-        return {
-          ...pet,
-          status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
-          appetite:
-            entryWithUser.appetite === "Ate all" ||
-              entryWithUser.appetite === "Ate some"
-              ? "Good"
-              : "Watch",
-        };
-      })
-    );
+    if (matchingPet?.firestoreId) {
+      await updatePet(matchingPet.firestoreId, {
+        ...matchingPet,
+        status: `${entryWithUser.appetite} ${entryWithUser.mealType.toLowerCase()}`,
+        appetite:
+          entryWithUser.appetite === "Ate all" ||
+          entryWithUser.appetite === "Ate some"
+            ? "Good"
+            : "Watch",
+      });
+    }
   }
 
   async function handleResetApp() {
@@ -211,9 +195,7 @@ await saveEntry(entryWithUser);
     }
 
     setPets((currentPets) =>
-      currentPets.map((pet) =>
-        pet.id === updatedPet.id ? updatedPet : pet
-      )
+      currentPets.map((pet) => (pet.id === updatedPet.id ? updatedPet : pet))
     );
   }
 
@@ -227,55 +209,76 @@ await saveEntry(entryWithUser);
     );
   }
 
-if (showSplash) {
-  return <SplashScreen />;
-}
+  if (showSplash) {
+    return <SplashScreen />;
+  }
 
-return (
-  <main className="app-shell">
-    <Navbar
-      onResetApp={handleResetApp}
-      onAddEntryClick={() => scrollToSection(mealFormRef)}
-    />
+  return (
+    <main className="app-shell">
+      <Navbar
+        user={user}
+        onResetApp={handleResetApp}
+        onLogMealClick={() => setIsMealModalOpen(true)}
+        onAddPetClick={() => setIsPetModalOpen(true)}
+      />
 
-    <div className="content-container">
-      <div className="dashboard-layout">
-        <section>
-          <Hero
-            onLogMealClick={() => scrollToSection(mealFormRef)}
-            onAddPetClick={() => scrollToSection(addPetFormRef)}
-          />
-          <AuthPanel user={user} />
+      <div className="content-container">
+        <div className="dashboard-layout">
+          <section>
+            <Hero
+              onLogMealClick={() => setIsMealModalOpen(true)}
+              onAddPetClick={() => setIsPetModalOpen(true)}
+            />
 
-          <StatsBar entries={entries} pets={pets} />
+            <StatsBar entries={entries} pets={pets} />
 
-          <div ref={mealFormRef}>
-            <MealForm onAddEntry={handleAddEntry} pets={pets} />
-          </div>
+            {pets.length === 0 && (
+              <AddPetForm onAddPet={handleAddPet} />
+            )}
 
-          <div ref={addPetFormRef}>
-            <AddPetForm onAddPet={handleAddPet} />
-          </div>
-
-          <section className="pet-grid">
-            {pets.map((pet) => (
-              <PetCard
-                key={pet.id}
-                pet={pet}
-                onDeletePet={handleDeletePet}
-                onUpdatePet={handleUpdatePet}
-              />
-            ))}
+            <section className="pet-grid">
+              {pets.map((pet) => (
+                <PetCard
+                  key={pet.id}
+                  pet={pet}
+                  onDeletePet={handleDeletePet}
+                  onUpdatePet={handleUpdatePet}
+                />
+              ))}
+            </section>
           </section>
-        </section>
 
-        <ActivityFeed
-          entries={entries}
-          onDeleteEntry={handleDeleteEntry}
-        />
+          <ActivityFeed entries={entries} onDeleteEntry={handleDeleteEntry} />
+        </div>
       </div>
-    </div>
-  </main>
+
+      <Modal
+        title="Log a meal"
+        isOpen={isMealModalOpen}
+        onClose={() => setIsMealModalOpen(false)}
+      >
+        <MealForm
+          onAddEntry={(entry) => {
+            handleAddEntry(entry);
+            setIsMealModalOpen(false);
+          }}
+          pets={pets}
+        />
+      </Modal>
+
+      <Modal
+        title="Add a pet"
+        isOpen={isPetModalOpen}
+        onClose={() => setIsPetModalOpen(false)}
+      >
+        <AddPetForm
+          onAddPet={(pet) => {
+            handleAddPet(pet);
+            setIsPetModalOpen(false);
+          }}
+        />
+      </Modal>
+    </main>
   );
 }
 
