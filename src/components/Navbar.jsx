@@ -1,7 +1,10 @@
 import AuthPanel from "./AuthPanel";
+import StatusRotator from "./StatusRotator";
 
 function Navbar({
   user,
+  pets,
+  entries,
   onResetApp,
   onLogMealClick,
   onAddPetClick,
@@ -16,7 +19,9 @@ function Navbar({
           <p className="logo-title">Tummy Tracker</p>
           <p className="logo-subtitle">Pet wellness dashboard</p>
         </div>
+        <StatusRotator pets={pets} entries={entries} />
       </div>
+      <br />
 
       <div className="nav-actions">
         <button className="nav-button" onClick={onLogMealClick}>

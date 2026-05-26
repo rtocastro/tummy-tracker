@@ -14,6 +14,7 @@ import AddPetForm from "./components/AddPetForm";
 import Modal from "./components/Modal";
 import SplashScreen from "./components/SplashScreen";
 import MedicationForm from "./components/MedicationForm";
+import StatusRotator from "./components/StatusRotator";
 
 import { pets as startingPets } from "./data/pets";
 
@@ -220,6 +221,8 @@ function App() {
     <main className="app-shell">
       <Navbar
         user={user}
+        entries={entries}
+        pets={pets}
         onResetApp={handleResetApp}
         onLogMealClick={() => setIsMealModalOpen(true)}
         onAddPetClick={() => setIsPetModalOpen(true)}

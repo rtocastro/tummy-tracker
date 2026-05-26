@@ -489,6 +489,77 @@ button.secondary,
   line-height: 1;
 }
 
+.status-rotator {
+  min-width: 220px;
+  max-width: 360px;
+  padding: 8px 14px;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: var(--teal-soft);
+  color: var(--teal-dark);
+  font-size: 0.85rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--orange);
+  flex: 0 0 auto;
+}
+
+.status-message {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: statusFade 0.35s ease;
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    align-items: flex-start;
+  }
+
+  .logo-group {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .status-rotator {
+    width: 100%;
+    max-width: 100%;
+    min-width: unset;
+    order: 3;
+  }
+
+  .nav-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .nav-actions button {
+    flex: 1 1 calc(50% - 8px);
+  }
+}
+
+@keyframes statusFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 @keyframes splashPop {
   0% {
