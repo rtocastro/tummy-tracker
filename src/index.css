@@ -548,6 +548,63 @@ button.secondary,
   }
 }
 
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav-main {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .logo-group {
+    width: 100%;
+  }
+
+  .status-rotator {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .nav-actions {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+
+    padding: 12px;
+    background: white;
+    border-top: 4px solid var(--teal);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .nav-actions button,
+  .nav-actions .auth-nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-shell {
+    padding-bottom: 170px;
+  }
+}
+
 @keyframes statusFade {
   from {
     opacity: 0;
