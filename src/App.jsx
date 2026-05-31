@@ -4,7 +4,6 @@ import "./index.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
-const hasPets = pets.length > 0;
 
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -231,13 +230,19 @@ function App() {
         onMedicationClick={() => setIsMedicationModalOpen(true)}
       />
 
+
+
       <div className="content-container">
         <div className="dashboard-layout">
           <section>
-            <Hero
-              onLogMealClick={() => setIsMealModalOpen(true)}
-              onAddPetClick={() => setIsPetModalOpen(true)}
-            />
+            {pets.length === 0 && (
+              <Hero
+                onLogMealClick={() => setIsMealModalOpen(true)}
+                onAddPetClick={() => setIsPetModalOpen(true)}
+              />
+            )}
+
+
 
             <StatsBar entries={entries} pets={pets} />
 
