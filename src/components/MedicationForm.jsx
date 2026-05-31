@@ -34,9 +34,8 @@ function MedicationForm({ pets, onAddEntry }) {
         hour: "numeric",
         minute: "2-digit",
       }),
-      text: `${formData.petName} took ${formData.medicationName}${
-        formData.dosage ? ` — ${formData.dosage}` : ""
-      }.`,
+      text: `${formData.petName} took ${formData.medicationName}${formData.dosage ? ` (${formData.dosage})` : ""
+        }${formData.notes ? ` — ${formData.notes}` : ""}.`,
     };
 
     onAddEntry(newEntry);
