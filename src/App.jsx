@@ -4,6 +4,8 @@ import "./index.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 
+const hasPets = pets.length > 0;
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import PetCard from "./components/PetCard";
