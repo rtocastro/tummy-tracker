@@ -41,6 +41,18 @@ function ActivityFeed({ entries = [], onDeleteEntry }) {
           </div>
 
           <p>{entry.text}</p>
+          {entry.images?.length > 0 && (
+            <div className="activity-images">
+              {entry.images.map((imageUrl) => (
+                <img
+                  key={imageUrl}
+                  src={imageUrl}
+                  alt="Entry attachment"
+                  className="activity-thumbnail"
+                />
+              ))}
+            </div>
+          )}
 
           <button
             className="small-delete-button"

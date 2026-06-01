@@ -627,6 +627,22 @@ button.secondary,
   margin: 0;
 }
 
+
+.activity-images {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.activity-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+}
+
 @keyframes statusFade {
   from {
     opacity: 0;
