@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { uploadImages } from "../services/cloudinary";
 
 function MealForm({ onAddEntry, pets }) {
     const [formData, setFormData] = useState({
@@ -6,6 +7,7 @@ function MealForm({ onAddEntry, pets }) {
         mealType: "Breakfast",
         appetite: "Ate all",
         notes: "",
+        images: [],
     });
 
     useEffect(() => {
@@ -26,8 +28,21 @@ function MealForm({ onAddEntry, pets }) {
         }));
     }
 
-    function handleSubmit(event) {
+    function handleImageChange(event) {
+        setFormData((currentData) => ({
+            ...currentData,
+            images: event.target.files,
+        }));
+    }
+
+    async function handleSubmit(event) {
         event.preventDefault();
+
+        let imageUrls = [];
+
+        if (formData.images.length > 0) {
+            imageUrls = await uploadImages(formData.images);
+        }
 
         const newEntry = {
             id: Date.now(),
@@ -36,6 +51,7 @@ function MealForm({ onAddEntry, pets }) {
             mealType: formData.mealType,
             appetite: formData.appetite,
             notes: formData.notes,
+            imageUrls: imageUrls,
             createdAt: Date.now(),
             time: new Date().toLocaleTimeString([], {
                 hour: "numeric",
@@ -101,6 +117,16 @@ function MealForm({ onAddEntry, pets }) {
                         value={formData.notes}
                         onChange={handleChange}
                         placeholder="Example: ate slower than usual, seemed tired..."
+                    />
+                </label>
+
+                <label>
+                    Photos
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageChange}
                     />
                 </label>
 
